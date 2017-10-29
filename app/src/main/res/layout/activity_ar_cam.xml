@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:surfaceview="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.activity.ARCamActivity">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <!--用于渲染相机预览-->
+        <SurfaceView
+            android:id="@+id/camera_surface"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </FrameLayout>
+
+    <!--用于描绘人脸关键点-->
+    <ImageView
+        android:id="@+id/iv_landmark"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="false"/>
+
+    <!--用于显示3D模型-->
+    <org.rajawali3d.view.SurfaceView
+        android:id="@+id/rajwali_surface"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        surfaceview:frameRate="30.0"
+        surfaceview:renderMode="RENDER_WHEN_DIRTY"/>
+
+    <!--拍照\录像按钮-->
+    <com.hairstyle.simu.ui.custom.CircularProgressView
+        android:id="@+id/btn_capture"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginBottom="20dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/btn_capture"
+        android:clickable="true"/>
+
+    <include
+        layout="@layout/layout_filter_menu"
+        android:id="@+id/layout_filter_menu"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"/>
+
+    <!--显示人脸检测信息-->
+    <include
+        layout="@layout/layout_debug_track"
+        android:id="@+id/layout_debug_track"
+        android:visibility="invisible"/>
+</RelativeLayout>
