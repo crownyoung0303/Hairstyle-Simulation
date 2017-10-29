@@ -1,5 +1,5 @@
 
-Hairstyle Simulation
+######Hairstyle Simulation
 
 Build an Android application that recognizes human face using Rajawali
 Rajawali is a 3D engine for Android based on OpenGL ES 2.0/3.0
