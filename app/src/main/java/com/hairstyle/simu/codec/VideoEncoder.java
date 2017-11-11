@@ -11,9 +11,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
-/**
- * Description:
- */
 public class VideoEncoder implements Runnable {
 
     private static final String TAG="VideoEncoder";
@@ -63,12 +60,6 @@ public class VideoEncoder implements Runnable {
     }
 
 
-    /**
-     * 准备录制
-     * @param width 视频宽度
-     * @param height 视频高度
-     * @throws IOException
-     */
     public void prepare(int width,int height) throws IOException {
         mHeadInfo=null;
         this.width=width;
@@ -93,10 +84,7 @@ public class VideoEncoder implements Runnable {
         mEnc.configure(format,null,null,MediaCodec.CONFIGURE_FLAG_ENCODE);
     }
 
-    /**
-     * 开始录制
-     * @throws InterruptedException
-     */
+
     public void start() throws InterruptedException {
         if(mThread!=null&&mThread.isAlive()){
             mStartFlag=false;
@@ -108,9 +96,6 @@ public class VideoEncoder implements Runnable {
         mThread.start();
     }
 
-    /**
-     * 停止录制
-     */
     public void stop(){
         try {
             mStartFlag=false;
@@ -124,11 +109,6 @@ public class VideoEncoder implements Runnable {
         }
     }
 
-    /**
-     * 由外部喂入一帧数据
-     * @param data RGBA数据
-     * @param timeStep camera附带时间戳
-     */
     public void feedData(final byte[] data, final long timeStep){
         hasNewData=true;
         nowFeedData=data;
@@ -151,7 +131,7 @@ public class VideoEncoder implements Runnable {
         }
     }
 
-    //TODO 定时调用，如果没有新数据，就用上一个数据
+    //TODO
     private void readOutputData(byte[] data,long timeStep) throws IOException {
         int index=mEnc.dequeueInputBuffer(-1);
         if(index>=0){

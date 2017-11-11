@@ -41,14 +41,13 @@ public class CameraTrackRenderer implements MyRenderer {
 
     private final static String TAG = CameraTrackRenderer.class.getSimpleName();
 
-    ///< 检测脸部动作：张嘴、眨眼、抬眉、点头、摇头
     private static final int ST_MOBILE_TRACKING_ENABLE_FACE_ACTION = 0x00000020;
-    private static final int ST_MOBILE_FACE_DETECT   =  0x00000001;    ///<  人脸检测
-    private static final int ST_MOBILE_EYE_BLINK     =  0x00000002;  ///<  眨眼
-    private static final int ST_MOBILE_MOUTH_AH      =  0x00000004;    ///<  嘴巴大张
-    private static final int ST_MOBILE_HEAD_YAW      =  0x00000008;    ///<  摇头
-    private static final int ST_MOBILE_HEAD_PITCH    =  0x00000010;    ///<  点头
-    private static final int ST_MOBILE_BROW_JUMP     =  0x00000020;    ///<  眉毛挑动
+    private static final int ST_MOBILE_FACE_DETECT   =  0x00000001;
+    private static final int ST_MOBILE_EYE_BLINK     =  0x00000002;
+    private static final int ST_MOBILE_MOUTH_AH      =  0x00000004;
+    private static final int ST_MOBILE_HEAD_YAW      =  0x00000008;
+    private static final int ST_MOBILE_HEAD_PITCH    =  0x00000010;
+    private static final int ST_MOBILE_BROW_JUMP     =  0x00000020;
 
     private final int PREVIEW_WIDTH = 640;
     private final int PREVIEW_HEIGHT = 480;
@@ -109,7 +108,6 @@ public class CameraTrackRenderer implements MyRenderer {
             StreamConfigurationMap map = c.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
             assert map != null;
             Size[] sizes = map.getOutputSizes(SurfaceHolder.class);
-            //自定义规则，选个大小
             mPreviewSize = sizes[0];
             mController.setDataSize(mPreviewSize.getHeight(), mPreviewSize.getWidth());
 

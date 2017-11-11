@@ -75,13 +75,13 @@ import java.util.concurrent.Executors;
 public class ARCamActivity extends AppCompatActivity implements ARCamContract.View, FrameCallback {
 
     private final static String TAG = ARCamActivity.class.getSimpleName();
-    // 拍照尺寸
+
     private final static int IMAGE_WIDTH = 720;
     private final static int IMAGE_HEIGHT = 1280;
-    // 录像尺寸
+
     private final static int VIDEO_WIDTH = 384;
     private final static int VIDEO_HEIGHT = 640;
-    // SenseTime人脸检测最大支持的尺寸为 640 x 480
+
     private final static int PREVIEW_WIDTH = 640;
     private final static int PREVIEW_HEIGHT = 480;
 
@@ -93,65 +93,57 @@ public class ARCamActivity extends AppCompatActivity implements ARCamContract.Vi
     private ARCamPresenter mPresenter;
 
     private RelativeLayout mLayoutRoot;
-    // 用于渲染相机预览画面
+
     private SurfaceView mSurfaceView;
-    // 用于显示人脸检测参数
+
     private TextView mTrackText, mActionText;
-    // 处理滤镜逻辑
+
     protected TextureController mController;
     private MyRenderer mRenderer;
-    // 相机Id，后置是0，前置是1
+
     private int cameraId = 1;
-    // 默认的相机滤镜的Id
+
     protected int mCurrentFilterId = R.id.menu_camera_default;
-    // 加速度计工具类，似乎是用于人脸检测的
+
     private static Accelerometer mAccelerometer;
 
-    // 由于不会写显示3D模型的滤镜，暂时借助于OpenGL ES引擎Rajawali
-    // 用于渲染3D模型
     private ISurface mRenderSurface;
     private ISurfaceRenderer mISurfaceRenderer;
-    // 因为渲染相机和3D模型的SurfaceView是分开的，拍照/录像时只能分别取两路数据，再合并
-    // 拍照用的
+
     private Bitmap mRajawaliBitmap = null;
-    // 录像用的
+
     private int[] mRajawaliPixels = null;
 
-    // 拍照/录像按钮
     private CircularProgressView mCapture;
-    // 处理录像逻辑
+
     private CameraRecorder mp4Recorder;
     private ExecutorService mExecutor;
-    // 录像持续的时间
+
     private long time;
-    // 录像最长时间限制
+
     private long maxTime = 20000;
-    // 步长
+
     private long timeStep = 50;
-    // 录像标志位
+
     private boolean recordFlag = false;
-    // 处理帧数据的标志位 0为拍照 1为录像
+
     private int mFrameType = TYPE_NONE;
 
-    // 滤镜列表
     private CustomBottomSheet mFilterSheet;
     private RecyclerView mRvFilter;
     private FilterAdapter mFilterAdapter;
     private List<Filter> mFilters;
 
-    // 装饰品列表
     private CustomBottomSheet mOrnamentSheet;
     private RecyclerView mRvOrnament;
     private OrnamentAdapter mOrnamentAdapter;
     private List<Ornament> mOrnaments;
 
-    // 特效列表
     private CustomBottomSheet mEffectSheet;
     private RecyclerView mRvEffect;
     private FilterAdapter mEffectAdapter;
     private List<Filter> mEffects;
 
-    // 面具列表
     private CustomBottomSheet mMaskSheet;
     private RecyclerView mRvMask;
     private PhotoAdapter mMaskAdapter;
@@ -176,7 +168,7 @@ public class ARCamActivity extends AppCompatActivity implements ARCamContract.Vi
         super.onCreate(savedInstanceState);
         mContext = ARCamActivity.this;
         mPresenter = new ARCamPresenter(this);
-        // 用于人脸检测
+
         mAccelerometer = new Accelerometer(this);
         mAccelerometer.start();
 
@@ -199,7 +191,7 @@ public class ARCamActivity extends AppCompatActivity implements ARCamContract.Vi
 
     private void initSurfaceView() {
         mSurfaceView = (SurfaceView) findViewById(R.id.camera_surface);
-        // 按住屏幕取消滤镜，松手恢复滤镜，以便对比
+
         mSurfaceView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -219,9 +211,9 @@ public class ARCamActivity extends AppCompatActivity implements ARCamContract.Vi
 
     private void initRajawaliSurface() {
         mRenderSurface = (org.rajawali3d.view.SurfaceView) findViewById(R.id.rajwali_surface);
-        // 将Rajawali的SurfaceView的背景设为透明
+
         ((org.rajawali3d.view.SurfaceView) mRenderSurface).setTransparent(true);
-        // 将Rajawali的SurfaceView的尺寸设为录像的尺寸
+
         ((org.rajawali3d.view.SurfaceView) mRenderSurface).getHolder().setFixedSize(VIDEO_WIDTH, VIDEO_HEIGHT);
         mISurfaceRenderer = new My3DRenderer(this);
         ((My3DRenderer) mISurfaceRenderer).setScreenW(IMAGE_WIDTH);
@@ -241,7 +233,6 @@ public class ARCamActivity extends AppCompatActivity implements ARCamContract.Vi
             }
         });
 
-        // 拍照时，先取Rajawali的帧数据，转成Bitmap待用；再取相机预览的帧数据，最后合成
         ((org.rajawali3d.view.SurfaceView) mRenderSurface).setOnTakeScreenshotListener(new org.rajawali3d.view.SurfaceView.OnTakeScreenshotListener() {
             @Override
             public void onTakeScreenshot(Bitmap bitmap) {
@@ -250,7 +241,7 @@ public class ARCamActivity extends AppCompatActivity implements ARCamContract.Vi
                 mController.takePhoto();
             }
         });
-        // 录像时，取Rajawali的帧数据待用
+
         ((org.rajawali3d.view.SurfaceView) mRenderSurface).setOnTakeScreenshotListener2(new org.rajawali3d.view.SurfaceView.OnTakeScreenshotListener2() {
             @Override
             public void onTakeScreenshot(int[] pixels) {
@@ -274,7 +265,7 @@ public class ARCamActivity extends AppCompatActivity implements ARCamContract.Vi
     private void initCaptureButton() {
         mCapture = (CircularProgressView) findViewById(R.id.btn_capture);
         mCapture.setTotal((int)maxTime);
-        // 拍照/录像按钮的逻辑
+
         mCapture.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -286,12 +277,12 @@ public class ARCamActivity extends AppCompatActivity implements ARCamContract.Vi
                         break;
                     case MotionEvent.ACTION_UP:
                         recordFlag = false;
-                        // 短按拍照
+
                         if(System.currentTimeMillis() - time < 500){
                             mFrameType = TYPE_PHOTO;
                             mCapture.removeCallbacks(captureTouchRunnable);
                             mController.setFrameCallback(IMAGE_WIDTH, IMAGE_HEIGHT, ARCamActivity.this);
-                            // 拍照时，先取Rajawali的帧数据
+
                             ((org.rajawali3d.view.SurfaceView) mRenderSurface).takeScreenshot();
                         }
                         break;
@@ -400,7 +391,7 @@ public class ARCamActivity extends AppCompatActivity implements ARCamContract.Vi
         if (modelList != null && modelList.size() > 0) {
             for (Ornament.Model model : modelList) {
                 if (model != null && model.isNeedSkinColor()) {
-                    // 获取人脸中心点的颜色
+
                     mIsNeedSkinColor = true;
                     mController.takePhoto();
                     return;
@@ -539,7 +530,7 @@ public class ARCamActivity extends AppCompatActivity implements ARCamContract.Vi
                     Ornament ornament = OrnamentFactory.getMask(path);
                     ((My3DRenderer) mISurfaceRenderer).setOrnamentModel(ornament);
                     ((My3DRenderer) mISurfaceRenderer).setIsNeedUpdateOrnament(true);
-                    // 获取人脸中心点的颜色
+
                     mIsNeedSkinColor = true;
                     mController.takePhoto();
                 }
@@ -559,16 +550,16 @@ public class ARCamActivity extends AppCompatActivity implements ARCamContract.Vi
         loadLocalImage();
     }
 
-    // 初始化的Runnable
+
     private Runnable initViewRunnable = new Runnable() {
         @Override
         public void run() {
             mExecutor = Executors.newSingleThreadExecutor();
             mController = new TextureController(mContext);
-            // 设置数据源
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 mRenderer = new CameraTrackRenderer(mContext, (CameraManager)getSystemService(CAMERA_SERVICE), mController, cameraId);
-                // 人脸检测的回调
+
                 ((CameraTrackRenderer) mRenderer).setTrackCallBackListener(new CameraTrackRenderer.TrackCallBackListener() {
                     @Override
                     public void onTrackDetected(STMobileFaceAction[] faceActions, final int orientation, final int value,
@@ -581,7 +572,6 @@ public class ARCamActivity extends AppCompatActivity implements ARCamContract.Vi
                 });
 
             }else{
-                // Camera1暂时没写人脸检测
                 mRenderer = new Camera1Renderer(mController, cameraId);
             }
 
@@ -606,7 +596,6 @@ public class ARCamActivity extends AppCompatActivity implements ARCamContract.Vi
         }
     };
 
-    //录像的Runnable
     private Runnable captureTouchRunnable = new Runnable() {
         @Override
         public void run() {
@@ -655,7 +644,7 @@ public class ARCamActivity extends AppCompatActivity implements ARCamContract.Vi
                         @Override
                         public void run() {
                             mCapture.setProcess(0);
-                            Toast.makeText(mContext, "录像时间太短了", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, "Recording time is too short", Toast.LENGTH_SHORT).show();
                         }
                     });
                 }else{
@@ -673,7 +662,7 @@ public class ARCamActivity extends AppCompatActivity implements ARCamContract.Vi
             @Override
             public void run() {
                 mCapture.setProcess(0);
-                Toast.makeText(mContext,"文件保存路径："+path,Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext,"File saving path："+path,Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -685,7 +674,7 @@ public class ARCamActivity extends AppCompatActivity implements ARCamContract.Vi
                 new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(ARCamActivity.this, "没有获得必要的权限", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ARCamActivity.this, "Not enough privileges", Toast.LENGTH_SHORT).show();
                         finish();
                     }
                 });
@@ -750,7 +739,6 @@ public class ARCamActivity extends AppCompatActivity implements ARCamContract.Vi
 
     @Override
     public void onFrame(final byte[] bytes, long time) {
-        // 录像有问题，暂时跳过
         if (mIsNeedFrameCallback && mStreamingView != null && mFrameType != TYPE_RECORD) {
             runOnUiThread(new Runnable() {
                 @Override
@@ -768,7 +756,7 @@ public class ARCamActivity extends AppCompatActivity implements ARCamContract.Vi
             });
         }
 
-        if (mIsNeedSkinColor) {  // 获取人脸中心点的颜色
+        if (mIsNeedSkinColor) {
             Log.e(TAG, "isNeedSkinColor");
             if (mSamplePoint != null) {
                 Bitmap bitmap = Bitmap.createBitmap(IMAGE_WIDTH, IMAGE_HEIGHT,
@@ -786,13 +774,13 @@ public class ARCamActivity extends AppCompatActivity implements ARCamContract.Vi
                 bitmap.recycle();
                 mSamplePoint = null;
                 mIsNeedSkinColor = false;
-                // 根据肤色更改模型贴图的颜色
+
                 ((My3DRenderer) mISurfaceRenderer).setSkinColor(pixel);
             }
 
-        } else if (mp4Recorder != null && mFrameType == TYPE_RECORD) {  // 处理录像
+        } else if (mp4Recorder != null && mFrameType == TYPE_RECORD) {
             handleVideoFrame(bytes);
-        } else if (mFrameType == TYPE_PHOTO) {  // 处理拍照
+        } else if (mFrameType == TYPE_PHOTO) {
             mFrameType = TYPE_NONE;
             handlePhotoFrame(bytes);
         }
@@ -803,7 +791,7 @@ public class ARCamActivity extends AppCompatActivity implements ARCamContract.Vi
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(ARCamActivity.this, "保存成功->" + fileName, Toast.LENGTH_SHORT).show();
+                Toast.makeText(ARCamActivity.this, "Saving success->" + fileName, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -813,7 +801,7 @@ public class ARCamActivity extends AppCompatActivity implements ARCamContract.Vi
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(ARCamActivity.this, "无法保存照片", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ARCamActivity.this, "Cannot save image", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -896,13 +884,13 @@ public class ARCamActivity extends AppCompatActivity implements ARCamContract.Vi
                                          final float pitch, final float roll, final float yaw,
                                          final int eye_dist, final int id, final int eyeBlink, final int mouthAh,
                                          final int headYaw, final int headPitch, final int browJump) {
-        // 处理3D模型的旋转
+
         mPresenter.handle3dModelRotation(pitch, roll, yaw);
-        // 处理3D模型的平移
+
         mPresenter.handle3dModelTransition(faceActions, orientation, eye_dist, yaw, PREVIEW_WIDTH, PREVIEW_HEIGHT);
-        // 处理人脸关键点
+
         mPresenter.handleFaceLandmark(faceActions, orientation, mouthAh, PREVIEW_WIDTH, PREVIEW_HEIGHT);
-        // 显示人脸检测的参数
+
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
