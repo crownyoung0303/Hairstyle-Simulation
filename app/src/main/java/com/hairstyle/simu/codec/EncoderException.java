@@ -1,8 +1,5 @@
 package com.hairstyle.simu.codec;
 
-/**
- * Description:
- */
 public class EncoderException extends Exception {
 
     public EncoderException() {

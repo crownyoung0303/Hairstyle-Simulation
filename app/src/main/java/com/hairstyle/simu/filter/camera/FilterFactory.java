@@ -28,14 +28,14 @@ public class FilterFactory {
 
     public static List<Filter> getPresetFilter() {
         List<Filter> filterList = new ArrayList<>();
-        filterList.add(new Filter(R.id.menu_camera_default, R.drawable.filter_thumb_0, "原图"));
+        filterList.add(new Filter(R.id.menu_camera_default, R.drawable.filter_thumb_0, "Original"));
 
         return filterList;
     }
 
     public static List<Filter> getPresetEffect() {
         List<Filter> filterList = new ArrayList<>();
-        filterList.add(new Filter(R.id.menu_camera_default, R.drawable.ic_remove, "原图"));
+        filterList.add(new Filter(R.id.menu_camera_default, R.drawable.ic_remove, "Original"));
 
         return filterList;
     }

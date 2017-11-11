@@ -6,9 +6,6 @@ import android.util.Log;
 
 import java.io.InputStream;
 
-/**
- * Created by Simon on 2017/7/5.
- */
 
 public class ShaderUtils {
     private static final String TAG = ShaderUtils.class.getSimpleName();

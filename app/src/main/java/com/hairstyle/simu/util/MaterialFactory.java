@@ -7,9 +7,6 @@ import org.rajawali3d.materials.methods.DiffuseMethod;
 import org.rajawali3d.materials.textures.ATexture;
 import org.rajawali3d.materials.textures.CubeMapTexture;
 
-/**
- * Created by wecut-simon on 2017/10/2.
- */
 
 public class MaterialFactory {
 

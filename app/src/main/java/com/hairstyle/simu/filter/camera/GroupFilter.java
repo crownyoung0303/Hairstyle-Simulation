@@ -29,8 +29,6 @@ public class GroupFilter extends AFilter{
     }
 
     public void addFilter(final AFilter filter){
-        //绘制到frameBuffer上和绘制到屏幕上的纹理坐标是不一样的
-        //Android屏幕相对GL世界的纹理Y轴翻转
         MatrixUtils.flip(filter.getMatrix(), false, true);
         mFilterQueue.add(filter);
     }
@@ -112,14 +110,13 @@ public class GroupFilter extends AFilter{
         createFrameBuffer();
     }
 
-    //创建离屏buffer
     private int fTextureSize = 2;
     private int[] fFrame = new int[1];
     private int[] fRender = new int[1];
     private int[] fTexture = new int[fTextureSize];
     private int textureIndex = 0;
 
-    //创建FrameBuffer
+    //Create FrameBuffer
     private boolean createFrameBuffer() {
         GLES20.glGenFramebuffers(1, fFrame, 0);
         GLES20.glGenRenderbuffers(1, fRender, 0);
@@ -140,7 +137,7 @@ public class GroupFilter extends AFilter{
         return false;
     }
 
-    //生成Textures
+    //Generate Textures
     private void genTextures() {
         GLES20.glGenTextures(fTextureSize, fTexture, 0);
         for (int i = 0; i < fTextureSize; i++) {
@@ -154,7 +151,7 @@ public class GroupFilter extends AFilter{
         }
     }
 
-    //取消绑定Texture
+    //UnBind Texture
     private void unBindFrame() {
         GLES20.glBindRenderbuffer(GLES20.GL_RENDERBUFFER, 0);
         GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, 0);
