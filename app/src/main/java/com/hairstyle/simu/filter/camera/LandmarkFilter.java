@@ -3,6 +3,8 @@ package com.hairstyle.simu.filter.camera;
 import android.content.res.Resources;
 import android.opengl.GLES20;
 
+
+
 public class LandmarkFilter extends AFilter {
 
     private int gLandmarkX;

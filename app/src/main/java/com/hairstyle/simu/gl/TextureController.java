@@ -31,33 +31,33 @@ public class TextureController implements GLSurfaceView.Renderer {
     private GLView mGLView;
 
     private MyRenderer mRenderer;
-    private TextureFilter mEffectFilter;
-    private GroupFilter mGroupFilter;
-    private AFilter mShowFilter;
+    private TextureFilter mEffectFilter;                           // 特效处理的Filter
+    private GroupFilter mGroupFilter;                              // 中间特效
+    private AFilter mShowFilter;                                   // 用来渲染输出的Filter
     private Point mDataSize;
     private Point mWindowSize;
     private AtomicBoolean isParamSet = new AtomicBoolean(false);
 
-    private float[] callbackOM = new float[16];
-    private int[] mExportFrame = new int[1];
+    private float[] callbackOM = new float[16];                   // 用于绘制回调缩放的矩阵
+    private int[] mExportFrame = new int[1];                      // 创建离屏buffer，用于最后导出数据
     private int[] mExportTexture = new int[1];
-    private float[] SM = new float[16];
-    private int mShowType = MatrixUtils.TYPE_CENTER_CROP;
+    private float[] SM = new float[16];                           // 用于绘制到屏幕上的变换矩阵
+    private int mShowType = MatrixUtils.TYPE_CENTER_CROP;         // 输出到屏幕上的方式
     private int mDirectionFlag = -1;
 
-    private boolean isRecord = false;
-    private boolean isShoot = false;
+    private boolean isRecord = false;                             // 录像flag
+    private boolean isShoot = false;                              // 一次拍摄flag
     private boolean isNeedFrame = false;
-    private ByteBuffer[] outPutBuffer = new ByteBuffer[3];
-    private FrameCallback mFrameCallback;
-    private int frameCallbackWidth, frameCallbackHeight;
-    private int indexOutput=0;
+    private ByteBuffer[] outPutBuffer = new ByteBuffer[3];        // 用于存储回调数据的buffer
+    private FrameCallback mFrameCallback;                         // 回调
+    private int frameCallbackWidth, frameCallbackHeight;          // 回调数据的宽高
+    private int indexOutput=0;                                    // 回调数据使用的buffer索引
 
-    public static final int FRAME_CALLBACK_DEFAULT = 0;
-    public static final int FRAME_CALLBACK_NO_FILTER = 1;
-    public static final int FRAME_CALLBACK_FILTER = 2;
-    public static final int FRAME_CALLBACK_DISABLE = 3;
-    public static final int FRAME_CALLBACK_ONLY = 4;
+    public static final int FRAME_CALLBACK_DEFAULT = 0;           // 预览和FrameCallback均应用滤镜效果
+    public static final int FRAME_CALLBACK_NO_FILTER = 1;         // 预览有滤镜效果，FrameCallback没有
+    public static final int FRAME_CALLBACK_FILTER = 2;            // 预览没有滤镜效果，FrameCallback有
+    public static final int FRAME_CALLBACK_DISABLE = 3;           // 只有预览，禁用FrameCallback
+    public static final int FRAME_CALLBACK_ONLY = 4;              // 禁用预览，只有FrameCallback
 
     private int mFrameCallbackType = FRAME_CALLBACK_DEFAULT;
 
@@ -89,6 +89,7 @@ public class TextureController implements GLSurfaceView.Renderer {
     private void init(){
         mGLView = new GLView(mContext);
 
+        //避免GLView的attachToWindow和detachFromWindow崩溃
         ViewGroup v = new ViewGroup(mContext) {
             @Override
             protected void onLayout(boolean changed, int l, int t, int r, int b) {}
@@ -100,10 +101,12 @@ public class TextureController implements GLSurfaceView.Renderer {
         mShowFilter = new NoFilter(mContext.getResources());
         mGroupFilter = new GroupFilter(mContext.getResources());
 
+        //设置默认的DateSize，DataSize由AiyaProvider根据数据源的图像宽高进行设置
         mDataSize = new Point(720,1280);
         mWindowSize = new Point(720,1280);
     }
 
+    //在Surface创建前，应该被调用
     public void setDataSize(int width, int height){
         mDataSize.x = width;
         mDataSize.y = height;
@@ -172,6 +175,7 @@ public class TextureController implements GLSurfaceView.Renderer {
             mGroupFilter.setTextureId(mEffectFilter.getOutputTexture());
             mGroupFilter.draw();
 
+            //显示传入的texture上，一般是显示在屏幕上
             GLES20.glViewport(0, 0, mWindowSize.x, mWindowSize.y);
             mShowFilter.setMatrix(SM);
 
@@ -258,6 +262,7 @@ public class TextureController implements GLSurfaceView.Renderer {
 
     private void calculateCallbackOM(){
         if(frameCallbackHeight > 0 && frameCallbackWidth > 0 && mDataSize.x > 0 && mDataSize.y > 0){
+            //计算输出的变换矩阵
             MatrixUtils.getMatrix(callbackOM, MatrixUtils.TYPE_CENTER_CROP, mDataSize.x, mDataSize.y,
                     frameCallbackWidth,
                     frameCallbackHeight);
@@ -279,6 +284,7 @@ public class TextureController implements GLSurfaceView.Renderer {
         mFrameCallbackType = type;
     }
 
+    //需要回调，则缩放图片到指定大小，读取数据并回调
     private void callbackIfNeeded() {
         if (mFrameCallback != null && (isRecord || isShoot || isNeedFrame)) {
             indexOutput = indexOutput++ >= 2 ? 0 : indexOutput;
@@ -309,6 +315,7 @@ public class TextureController implements GLSurfaceView.Renderer {
         }
     }
 
+    //读取数据并回调
     private void frameCallback(){
         GLES20.glReadPixels(0, 0, frameCallbackWidth, frameCallbackHeight,
                 GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, outPutBuffer[indexOutput]);

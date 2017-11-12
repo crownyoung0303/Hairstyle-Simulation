@@ -157,7 +157,7 @@ public class CameraTrackActivity extends AppCompatActivity implements FrameCallb
                 new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(CameraTrackActivity.this, "Not enough privileges", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(CameraTrackActivity.this, "没有获得必要的权限", Toast.LENGTH_SHORT).show();
                         finish();
                     }
                 });
@@ -251,7 +251,7 @@ public class CameraTrackActivity extends AppCompatActivity implements FrameCallb
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(CameraTrackActivity.this, "Cannot save image", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CameraTrackActivity.this, "无法保存照片", Toast.LENGTH_SHORT).show();
                 }
             });
             return;
@@ -270,7 +270,7 @@ public class CameraTrackActivity extends AppCompatActivity implements FrameCallb
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(CameraTrackActivity.this, "Saving success->"+jpegName, Toast.LENGTH_SHORT).show();
+                Toast.makeText(CameraTrackActivity.this, "保存成功->"+jpegName, Toast.LENGTH_SHORT).show();
             }
         });
     }

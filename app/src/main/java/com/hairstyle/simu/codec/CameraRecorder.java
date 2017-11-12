@@ -1,3 +1,10 @@
+/*
+ *
+ * YooRecorder.java
+ * 
+ * Created by Wuwang on 2016/12/31
+ * Copyright © 2016年 深圳哎吖科技. All rights reserved.
+ */
 package com.hairstyle.simu.codec;
 
 import android.annotation.TargetApi;
@@ -49,10 +56,10 @@ public class CameraRecorder {
     private Thread mAudioThread;
 
     private MediaCodec mVideoEnc;
-    private String videoMime="video/avc";
-    private int videoRate=2048000;
-    private int frameRate=24;
-    private int frameInterval=1;
+    private String videoMime="video/avc";   //视频编码格式
+    private int videoRate=2048000;       //视频编码波特率
+    private int frameRate=24;           //视频编码帧率
+    private int frameInterval=1;        //视频编码关键帧，1秒一关键帧
 
     private int fpsTime;
 
@@ -85,6 +92,7 @@ public class CameraRecorder {
     }
 
     public int prepare(int width,int height) throws IOException {
+        //准备Audio
         MediaFormat format=MediaFormat.createAudioFormat(audioMime,sampleRate,channelCount);
         format.setInteger(MediaFormat.KEY_AAC_PROFILE, MediaCodecInfo.CodecProfileLevel.AACObjectLC);
         format.setInteger(MediaFormat.KEY_BIT_RATE, audioRate);
@@ -95,6 +103,7 @@ public class CameraRecorder {
         mRecorder=new AudioRecord(MediaRecorder.AudioSource.MIC,sampleRate,channelConfig,
             audioFormat,bufferSize);
 
+        //准备Video
 //        mHeadInfo=null;
         this.width=width;
         this.height=height;
@@ -117,6 +126,7 @@ public class CameraRecorder {
     }
 
     public int start() throws InterruptedException {
+        //记录起始时间
         nanoTime = System.nanoTime();
         synchronized (LOCK){
             //Audio Start
@@ -217,6 +227,11 @@ public class CameraRecorder {
         }
     }
 
+    /**
+     * 由外部喂入一帧数据
+     * @param data RGBA数据
+     * @param timeStep camera附带时间戳
+     */
     public void feedData(final byte[] data, final long timeStep){
         hasNewData = true;
         nowFeedData = data;
@@ -290,6 +305,11 @@ public class CameraRecorder {
         return false;
     }
 
+    /**
+     * 给编码出的aac裸流添加adts头字段
+     * @param packet 要空出前7个字节，否则会搞乱数据
+     * @param packetLen
+     */
     private void addADTStoPacket(byte[] packet, int packetLen) {
         int profile = 2;  //AAC LC
         int freqIdx = 4;  //44.1KHz
@@ -303,7 +323,7 @@ public class CameraRecorder {
         packet[6] = (byte)0xFC;
     }
 
-    //TODO
+    //TODO 定时调用，如果没有新数据，就用上一个数据
     private boolean videoStep(byte[] data) throws IOException {
         int index=mVideoEnc.dequeueInputBuffer(-1);
         if(index>=0){
