@@ -9,6 +9,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+/**
+ * Created by Simon on 2017/7/19.
+ */
+
 public class FileUtils {
 
     public static String getBaseFolder(Context context){

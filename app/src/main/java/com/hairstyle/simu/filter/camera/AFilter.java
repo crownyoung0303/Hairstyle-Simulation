@@ -14,6 +14,8 @@ import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
 import java.util.Arrays;
 
+
+
 public abstract class AFilter {
     private final static String TAG = AFilter.class.getSimpleName();
 
@@ -22,25 +24,55 @@ public abstract class AFilter {
     public static final int KEY_INDEX = 0x201;
 
     public static boolean DEBUG = true;
+    /**
+     * 单位矩阵
+     */
     public static final float[] OM = MatrixUtils.getOriginalMatrix();
-
+    /**
+     * 程序句柄
+     */
     protected int mProgram;
+    /**
+     * 顶点坐标句柄
+     */
     protected int mHPosition;
+    /**
+     * 纹理坐标句柄
+     */
     protected int mHCoord;
+    /**
+     * 总变换矩阵句柄
+     */
     protected int mHMatrix;
+    /**
+     * 默认纹理贴图句柄
+     */
     protected int mHTexture;
+
     protected Resources mRes;
 
+    /**
+     * 顶点坐标Buffer
+     */
     protected FloatBuffer mVerBuffer;
+
+    /**
+     * 纹理坐标Buffer
+     */
     protected FloatBuffer mTexBuffer;
+
+    /**
+     * 索引坐标Buffer
+     */
     protected ShortBuffer mindexBuffer;
 
     protected int mFlag = 0;
 
     private float[] matrix = Arrays.copyOf(OM, 16);
 
-    private int textureType = 0;
+    private int textureType = 0;      //默认使用Texture2D0
     private int textureId = 0;
+    //顶点坐标
     private float pos[] = {
             -1.0f,  1.0f,
             -1.0f, -1.0f,
@@ -48,6 +80,7 @@ public abstract class AFilter {
             1.0f,  -1.0f,
     };
 
+    //纹理坐标
     private float[] coord={
             0.0f, 0.0f,
             0.0f,  1.0f,
@@ -159,6 +192,9 @@ public abstract class AFilter {
         return -1;
     }
 
+    /**
+     * 实现此方法，完成程序的创建，可直接调用createProgram来实现
+     */
     protected abstract void onCreate();
     protected abstract void onSizeChanged(int width, int height);
 
@@ -175,7 +211,7 @@ public abstract class AFilter {
     }
 
     /**
-     * Buffer initialization
+     * Buffer初始化
      */
     protected void initBuffer(){
         ByteBuffer a = ByteBuffer.allocateDirect(32);
@@ -194,6 +230,9 @@ public abstract class AFilter {
         GLES20.glUseProgram(mProgram);
     }
 
+    /**
+     * 启用顶点坐标和纹理坐标进行绘制
+     */
     protected void onDraw(){
         GLES20.glEnableVertexAttribArray(mHPosition);
         GLES20.glVertexAttribPointer(mHPosition, 2, GLES20.GL_FLOAT, false, 0, mVerBuffer);
@@ -205,18 +244,23 @@ public abstract class AFilter {
     }
 
     /**
-     * clear
+     * 清除画布
      */
     protected void onClear(){
         GLES20.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
     }
 
+    /**
+     * 设置其他扩展数据
+     */
     protected void onSetExpandData(){
         GLES20.glUniformMatrix4fv(mHMatrix, 1, false, matrix, 0);
     }
 
-
+    /**
+     * 绑定默认纹理
+     */
     protected void onBindTexture(){
         GLES20.glActiveTexture(GLES20.GL_TEXTURE0 + textureType);
         GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, getTextureId());
@@ -229,6 +273,7 @@ public abstract class AFilter {
         }
     }
 
+    //通过路径加载Assets中的文本内容
     public static String uRes(Resources mRes, String path){
         StringBuilder result = new StringBuilder();
         try{
@@ -244,7 +289,7 @@ public abstract class AFilter {
         return result.toString().replaceAll("\\r\\n", "\n");
     }
 
-    //create GL program
+    //创建GL程序
     public static int uCreateGlProgram(String vertexSource, String fragmentSource){
         int vertex = uLoadShader(GLES20.GL_VERTEX_SHADER, vertexSource);
         if (vertex == 0) return 0;
@@ -266,7 +311,7 @@ public abstract class AFilter {
         return program;
     }
 
-    //load shader
+    //加载shader
     public static int uLoadShader(int shaderType, String source){
         int shader = GLES20.glCreateShader(shaderType);
         if(0 != shader){

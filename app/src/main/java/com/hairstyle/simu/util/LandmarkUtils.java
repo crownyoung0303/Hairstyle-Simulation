@@ -20,6 +20,9 @@ import java.io.InputStreamReader;
 import java.security.MessageDigest;
 import java.text.DecimalFormat;
 
+/**
+ * Created by Simon on 2017/7/20.
+ */
 
 public class LandmarkUtils {
 
@@ -66,12 +69,16 @@ public class LandmarkUtils {
     public static String getMD5(String message) {
         String md5str = "";
         try {
+            //1 创建一个提供信息摘要算法的对象，初始化为md5算法对象
             MessageDigest md = MessageDigest.getInstance("MD5");
 
+            //2 将消息变成byte数组
             byte[] input = message.getBytes();
 
+            //3 计算后获得字节数组,这就是那128位了
             byte[] buff = md.digest(input);
 
+            //4 把数组每一字节（一个字节占八位）换成16进制连成md5字符串
             md5str = bytesToHex(buff);
 
         } catch (Exception e) {
@@ -82,6 +89,7 @@ public class LandmarkUtils {
 
     public static String bytesToHex(byte[] bytes) {
         StringBuffer md5str = new StringBuffer();
+        //把数组每一字节换成16进制连成md5字符串
         int digital;
         for (int i = 0; i < bytes.length; i++) {
             digital = bytes[i];
@@ -143,6 +151,7 @@ public class LandmarkUtils {
     }
 
     public static boolean replaceTexture(Context context, STMobileMultiTrack106 tracker, String path) {
+        // 获取待检测人脸的图片Bitmap，限制一下大小，好像是不能超过640x480
         Bitmap bitmap = BitmapUtils.getRequireWidthBitmap(path, 240);
         if (bitmap == null) {
             return false;
@@ -162,9 +171,11 @@ public class LandmarkUtils {
                 if (points == null || points.length < 106) {
                     return false;
                 } else {
+                    // 获取图片的原始宽高
                     int size[] = BitmapUtils.getImageWidthHeight(path);
                     int imgWidth = size[0];
                     int imgHeight = size[1];
+                    // 获取缩小的比例
                     float scale = (float)imgWidth / width;
 
                     PointF[] tmp = new PointF[106];
@@ -172,16 +183,19 @@ public class LandmarkUtils {
                     for (int i=0; i<106; i++) {
                         PointF point = points[i];
                         Log.e(TAG, "point: " + point);
+                        // 将关键点坐标乘以缩小的比例，再除以原图的宽高，获得贴图坐标
                         float x = point.x * scale / imgWidth;
                         float y = 1.0f - ((point.y * scale) / imgHeight);
                         tmp[i] = new PointF(x, y);
                         Log.e(TAG, "tmp: " + tmp[i]);
                     }
 
+                    // 根据模型顶点坐标与贴图坐标的对应关系，得到待输出的点
                     for (int i=0; i<44; i++) {
                         newPoints[i] = getRemapPoint(tmp, i);
                     }
 
+                    // 缺少base_mask.mtl和base_texture.jpg的话，加载模型时有警告
                     String modelDir = getDir("/OpenGLDemo/txt/");
                     String baseMtlPath = modelDir + "base_face_uv3.mtl";
                     File mtlFile = new File(baseMtlPath);
@@ -195,12 +209,13 @@ public class LandmarkUtils {
                  //       FileUtils.copyFileFromRawToOthers(context, R.raw.average_male, baseTexturePath);
                     }
 
+                    // 读取预设模型base_mask_obj
                     StringBuilder stringBuilder = new StringBuilder();
                     InputStream is = context.getResources().openRawResource(R.raw.base_face_uv3_obj);
                     try {
                         InputStreamReader reader = new InputStreamReader(is);
                         BufferedReader br = new BufferedReader(reader);
-                        for(String str; (str = br.readLine()) != null; ) {
+                        for(String str; (str = br.readLine()) != null; ) {  // 这里不能用while(br.readLine()) != null) 因为循环条件已经读了一条
                             stringBuilder.append(str).append("\n");
                         }
                         br.close();
@@ -212,6 +227,7 @@ public class LandmarkUtils {
                     Log.e(TAG, "read base_mask_obj: " + obj_str);
 
                     DecimalFormat decimalFormat = new DecimalFormat(".0000");
+                    // base_mask_obj第49至第92行定义贴图坐标
                     String[] ss = obj_str.split("\n");
                     int i = 48;
                     for (PointF point : newPoints) {
@@ -222,6 +238,7 @@ public class LandmarkUtils {
                         i++;
                     }
 
+                    // 输出替换贴图后的新的OBJ模型文件
                     String objPath = modelDir + "base_face_uv3_obj";
                     try {
                         FileWriter writer = new FileWriter(objPath);

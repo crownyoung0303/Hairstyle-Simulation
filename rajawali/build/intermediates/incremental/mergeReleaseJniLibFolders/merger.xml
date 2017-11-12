@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merger version="3"><dataSet config="main"><source path="D:\workspace\Hairstyle-Simulation\rajawali\src\main\jniLibs"/></dataSet><dataSet config="release"><source path="D:\workspace\Hairstyle-Simulation\rajawali\src\release\jniLibs"/></dataSet></merger>
+<merger version="3"><dataSet config="main"><source path="/Users/Lily/Downloads/ARCamera-master-2/rajawali/src/main/jniLibs"/></dataSet><dataSet config="release"><source path="/Users/Lily/Downloads/ARCamera-master-2/rajawali/src/release/jniLibs"/></dataSet></merger>

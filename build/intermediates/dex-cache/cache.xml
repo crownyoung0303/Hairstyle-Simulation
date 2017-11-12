@@ -3,30 +3,30 @@
 
     <item
         is-multidex="true"
-        jar="D:\workspace\Hairstyle-Simulation\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jar="/Users/Lily/Downloads/ARCamera-master-2/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="017bedca2e1764a5105203bcad666c9161cfb857">
+        <dex dex="/Users/Lily/Downloads/ARCamera-master-2/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_1793a2c1ca23a3bee320e410d222ae4a45f81c7e/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/Lily/Downloads/ARCamera-master-2/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
         sha1="3be78ebc2706b2e1fe2f12d5726887a92d6c183b">
-        <dex dex="D:\workspace\Hairstyle-Simulation\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run_710bffe9e6e8d5deb4c14072639ab9bf1c40c55a\classes.dex" />
+        <dex dex="/Users/Lily/Downloads/ARCamera-master-2/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_0ca483770bda0472f7808d3e672fcdc8ff0b419b/classes.dex" />
     </item>
     <item
         is-multidex="true"
-        jar="D:\workspace\Hairstyle-Simulation\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="638ba1e8015c0585de6fae655bd3e6c6c2a3399a">
-        <dex dex="D:\workspace\Hairstyle-Simulation\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_f5377c31a82c4c15e41b739c382dbf7d757d2764\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="D:\workspace\Hairstyle-Simulation\stmobile\build\intermediates\bundles\default\libs\jna-min.jar"
+        jar="/Users/Lily/Downloads/ARCamera-master-2/stmobile/build/intermediates/bundles/default/libs/jna-min.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
         sha1="a4a91f0c1f739649baf2f67d12a4c2fd32b1cfa2">
-        <dex dex="D:\workspace\Hairstyle-Simulation\app\build\intermediates\transforms\dex\debug\folders\1000\8\jna-min_e9005e9aa0acf27e8d41f62ee9de49bca802801d\classes.dex" />
+        <dex dex="/Users/Lily/Downloads/ARCamera-master-2/app/build/intermediates/transforms/dex/debug/folders/1000/8/jna-min_ee7a9d96d97c3d230769e007e539294abe3fa028/classes.dex" />
     </item>
 
 </items>
