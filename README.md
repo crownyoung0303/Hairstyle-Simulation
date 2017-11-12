@@ -8,3 +8,4 @@ Team member: Lingxiu Ge, Lingshan Yang, Tong Ye, Yujia Wang
 - Draw lines between certain feature points and use these lines to set up a 3D face model
 - Connect  face feature with stickers coordinates
 - Implemented simple stickers
+- Implemented simple hairstyles
