@@ -6,37 +6,8 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
-/**
- * Created by Simon on 2017/7/7.
- */
 
 public class Accelerometer {
-    /**
-     *
-     * @author MatrixCV
-     *
-     * CLOCKWISE_ANGLE为手机旋转角度
-     * 其Deg0定义如下图所示
-     *  ___________________
-     * | +--------------+  |
-     * | |              |  |
-     * | |              |  |
-     * | |              | O|
-     * | |              |  |
-     * | |______________|  |
-     * ---------------------
-     * 顺时针旋转后得到Deg90，即手机竖屏向上，如下图所示
-     *  ___________
-     * |           |
-     * |+---------+|
-     * ||         ||
-     * ||         ||
-     * ||         ||
-     * ||         ||
-     * ||         ||
-     * |+---------+|
-     * |_____O_____|
-     */
     public enum CLOCKWISE_ANGLE {
         Deg0(0), Deg90(1), Deg180(2), Deg270(3);
         private int value;
@@ -54,20 +25,12 @@ public class Accelerometer {
 
     private static CLOCKWISE_ANGLE rotation;
 
-    /**
-     *
-     * @param ctx
-     * 用Activity初始化获得传感器
-     */
     public Accelerometer(Context ctx) {
         sensorManager = (SensorManager) ctx
                 .getSystemService(Context.SENSOR_SERVICE);
         rotation = CLOCKWISE_ANGLE.Deg0;
     }
 
-    /**
-     * 开始对传感器的监听
-     */
     public void start() {
         if (hasStarted) return;
         hasStarted = true;
@@ -77,27 +40,16 @@ public class Accelerometer {
                 SensorManager.SENSOR_DELAY_NORMAL);
     }
 
-    /**
-     * 结束对传感器的监听
-     */
     public void stop() {
         if (!hasStarted) return;
         hasStarted = false;
         sensorManager.unregisterListener(accListener);
     }
 
-    /**
-     *
-     * @return
-     * 返回当前手机转向
-     */
     static public int getDirection() {
         return rotation.getValue();
     }
 
-    /**
-     * 传感器与手机转向之间的逻辑
-     */
     private SensorEventListener accListener = new SensorEventListener() {
 
         @Override

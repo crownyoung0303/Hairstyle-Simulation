@@ -60,7 +60,7 @@ public class OrnamentFactory {
         modelList.add(model);
         ornament.setModelList(modelList);
         ornament.setFrameCallbackType(TextureController.FRAME_CALLBACK_DISABLE);
-        ornament.setToastMsg("镜面显示浏览器画面");
+        ornament.setToastMsg("Info");
 
         return ornament;
     }
