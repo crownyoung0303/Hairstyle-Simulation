@@ -15,5 +15,5 @@ How to run our app:
 1. install andriod studio
 2. import project
 3. run project on an andriod phone (please note that our project DOES NOT work on virtual phone)
-4. open maim and choose a type of hair style
+4. open main and choose a type of hair style
 5. our app works the best when the user stays close to the front camera
