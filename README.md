@@ -20,4 +20,4 @@ Haitstyle Simulation is a project which helps users who wish to see how they loo
 3. run project on an andriod phone (please note that our project DOES NOT work on virtual phone)
 4. open main and choose a type of hair style
 5. our app works the best when the user stays close to the front camera
-
+6. Note that you may encounter "Invalid VCS root mapping" Errors but they are fine just ignore them.
