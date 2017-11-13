@@ -6,10 +6,6 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 
-/**
- * Created by Simon on 2017/7/5.
- */
-
 public class PermissionUtils {
 
     public static void askPermission(Activity context, String[] permissions, int req, Runnable

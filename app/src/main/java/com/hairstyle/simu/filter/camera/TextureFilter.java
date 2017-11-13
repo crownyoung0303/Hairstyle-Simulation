@@ -23,7 +23,6 @@ public class TextureFilter extends AFilter  {
     private SurfaceTexture mSurfaceTexture;
     private float[] mCoordOM = new float[16];
 
-    //获取Track数据
     private ByteBuffer tBuffer;
 
     public TextureFilter(Resources mRes) {

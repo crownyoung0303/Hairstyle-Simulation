@@ -68,7 +68,6 @@ public class Camera2Renderer implements MyRenderer {
             CameraCharacteristics c = mCameraManager.getCameraCharacteristics(cameraId + "");
             StreamConfigurationMap map = c.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
             Size[] sizes = map.getOutputSizes(SurfaceHolder.class);
-            //自定义规则，选个大小
             mPreviewSize = sizes[0];
             mController.setDataSize(mPreviewSize.getHeight(), mPreviewSize.getWidth());
 

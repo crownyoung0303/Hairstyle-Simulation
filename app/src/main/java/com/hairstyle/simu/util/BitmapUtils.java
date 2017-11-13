@@ -5,9 +5,6 @@ import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.View;
 
-/**
- * Created by Simon on 2017/7/20.
- */
 
 public class BitmapUtils {
 
@@ -104,7 +101,6 @@ public class BitmapUtils {
             height = (int) (reqWidth * ratio);
         }
 
-        // 宽高不能是奇数
         if (width % 2 == 1) {
             width++;
         }
@@ -114,7 +110,7 @@ public class BitmapUtils {
         Log.e(TAG, "dst bitmap width: " + width);
         Log.e(TAG, "dst bitmap height: " + height);
 
-        Bitmap bitmap = decodeSampledBitmapFromFilePath(path, width, height);  // 这个方法只是每次除以2，直到小于等于指定的大小，而不是缩小到指定的大小
+        Bitmap bitmap = decodeSampledBitmapFromFilePath(path, width, height);
         return Bitmap.createScaledBitmap(bitmap, width, height, true);
     }
 
@@ -129,15 +125,9 @@ public class BitmapUtils {
     public static int[] getImageWidthHeight(String path){
         BitmapFactory.Options options = new BitmapFactory.Options();
 
-        /**
-         * 最关键在此，把options.inJustDecodeBounds = true;
-         * 这里再decodeFile()，返回的bitmap为空，但此时调用options.outHeight时，已经包含了图片的高了
-         */
         options.inJustDecodeBounds = true;
-        Bitmap bitmap = BitmapFactory.decodeFile(path, options); // 此时返回的bitmap为null
-        /**
-         *options.outHeight为原始图片的高
-         */
+        Bitmap bitmap = BitmapFactory.decodeFile(path, options);
+
         return new int[]{options.outWidth, options.outHeight};
     }
 }
