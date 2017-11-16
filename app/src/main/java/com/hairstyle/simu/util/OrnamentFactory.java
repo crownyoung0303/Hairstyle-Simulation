@@ -42,7 +42,7 @@ public class OrnamentFactory {
 
         model.setModelResId(R.raw.hair1_obj);
         model.setScale(0.2f);
-        model.setOffset(0.01f, 0.05f, -1.0f);
+        model.setOffset(0, 0.05f, -1.0f);
         model.setRotate(0, 0, 0);
 
         model.setNeedStreaming(true);
@@ -65,7 +65,7 @@ public class OrnamentFactory {
 
         model.setModelResId(R.raw.hair2_obj);
         model.setScale(0.2f);
-        model.setOffset(0.01f, 0.05f, -1.0f);
+        model.setOffset(0, 0.05f, -1.0f);
         model.setRotate(0, 0, 0);
 
         model.setNeedStreaming(true);
@@ -86,11 +86,10 @@ public class OrnamentFactory {
 
         Ornament.Model model = new Ornament.Model();
 
-        model.setModelResId(R.raw.hair1_obj);
+        model.setModelResId(R.raw.hair3_obj);
         model.setScale(0.2f);
         model.setOffset(0.01f, 0.05f, -1.0f);
         model.setRotate(0, 0, 0);
-        model.setColor(Color.RED);
 
         model.setNeedStreaming(true);
 
