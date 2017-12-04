@@ -116,6 +116,8 @@ public class ARCamActivity extends AppCompatActivity implements ARCamContract.Vi
 
     private CircularProgressView mCapture;
 
+    private STMobileFaceAction[] pts;
+
     private CameraRecorder mp4Recorder;
     private ExecutorService mExecutor;
 
@@ -184,7 +186,7 @@ public class ARCamActivity extends AppCompatActivity implements ARCamContract.Vi
         initMenuButton();
         initCommonView();
         initFilterSheet();
-        initOrnamentSheet();
+        //initOrnamentSheet();
         initEffectSheet();
         initMaskSheet();
     }
@@ -302,6 +304,7 @@ public class ARCamActivity extends AppCompatActivity implements ARCamContract.Vi
         View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                initOrnamentSheet();
                 switch (v.getId()) {
 
                     case R.id.iv_ornament:
@@ -382,7 +385,7 @@ public class ARCamActivity extends AppCompatActivity implements ARCamContract.Vi
         mOrnamentSheet.getWindow().findViewById(R.id.design_bottom_sheet)
                 .setBackgroundResource(android.R.color.transparent);
 
-        mOrnaments.addAll(OrnamentFactory.getPresetOrnament());
+        mOrnaments.addAll(OrnamentFactory.getPresetOrnament(recommendation((pts))));
         mOrnamentAdapter.notifyDataSetChanged();
     }
 
@@ -568,6 +571,7 @@ public class ARCamActivity extends AppCompatActivity implements ARCamContract.Vi
                                                 final int headYaw, final int headPitch, final int browJump) {
                         onTrackDetectedCallback(faceActions, orientation, value,
                                 pitch, roll, yaw, eye_dist, id, eyeBlink, mouthAh, headYaw, headPitch, browJump);
+                        pts = faceActions;
                     }
                 });
 
@@ -913,5 +917,48 @@ public class ARCamActivity extends AppCompatActivity implements ARCamContract.Vi
             }
         });
         getSupportLoaderManager().initLoader(0, null, mediaLoaderCallback);
+    }
+
+    private int recommendation(STMobileFaceAction[] faceActions){
+        PointF[] points= faceActions[0].getFace().getPointsArray();
+        int i=0;
+        PointF p1=points[2];
+        PointF p2=points[30];
+        PointF p3=points[12];
+        PointF p4=points[20];
+        PointF p5=points[16];
+        PointF p6=points[43];
+        double l1=Math.sqrt(Math.pow(p1.x-p2.x,2)+Math.pow(p1.y-p2.y,2));
+        double l2=Math.sqrt(Math.pow(p3.x-p4.x,2)+Math.pow(p3.y-p4.y,2));
+        double l3=Math.sqrt(Math.pow(p5.x-p6.x,2)+Math.pow(p5.y-p6.y,2));
+        double para1=l1/l2;
+        double para2=l1/l3;
+        if(para1<2.0) {
+            if (para2 < 1.0) {
+                return 1;
+            } else if (para2 > 1.15) {
+                return 3;
+            } else {
+                return 2;
+            }
+        }
+        else if(para1>2.5) {
+            if (para2 < 1.0) {
+                return 7;
+            } else if (para2 > 1.15) {
+                return 9;
+            } else {
+                return 8;
+            }
+        }
+        else{
+            if (para2 < 1.0) {
+                return 4;
+            } else if (para2 > 1.15) {
+                return 6;
+            } else {
+                return 5;
+            }
+        }
     }
 }

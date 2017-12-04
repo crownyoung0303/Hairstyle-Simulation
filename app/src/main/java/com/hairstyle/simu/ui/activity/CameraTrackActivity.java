@@ -326,6 +326,10 @@ public class CameraTrackActivity extends AppCompatActivity implements FrameCallb
             for (STMobileFaceAction r : faceActions) {
                 Log.i("Test", "-->> face count = "+faceActions.length);
                 PointF[] points = r.getFace().getPointsArray();
+                for (int i = 0; i < points.length; i++) {
+                    Log.i("Test", "-->> PTS"+i+"="+points[i]);
+                }
+
                 float[] landmarkX = new float[points.length];
                 float[] landmarkY = new float[points.length];
                 for (int i = 0; i < points.length; i++) {

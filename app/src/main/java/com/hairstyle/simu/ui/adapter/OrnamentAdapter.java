@@ -39,7 +39,7 @@ public class OrnamentAdapter extends RecyclerView.Adapter<OrnamentAdapter.MyView
     public void onBindViewHolder(MyViewHolder holder, final int position) {
         final Ornament bean = mData.get(position);
         if (bean != null) {
-            holder.ivImg.setColorFilter(Color.WHITE);
+            //holder.ivImg.setColorFilter(Color.WHITE);
             holder.ivImg.setImageResource(bean.getImgResId());
 
             holder.ivImg.setOnClickListener(new View.OnClickListener() {

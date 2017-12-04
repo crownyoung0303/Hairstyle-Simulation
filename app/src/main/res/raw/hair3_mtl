@@ -1,12 +1,15 @@
 # Blender MTL File: 'None'
 # Material Count: 1
 
-newmtl hair3
-Ns 96.078431
+newmtl aqua
+Ns 1000.000000
 Ka 1.000000 1.000000 1.000000
-Kd 0.640000 0.000000 0.004355
-Ks 0.500000 0.500000 0.500000
+Kd 1.000000 1.000000 1.000000
+Ks 0.400000 0.400000 0.400000
 Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 2
+map_Kd hair3.png
+map_Ka hair3.png
+map_d hair3.png
