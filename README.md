@@ -21,3 +21,12 @@ Haitstyle Simulation is a project which helps users who wish to see how they loo
 4. open main and choose a type of hair style
 5. our app works the best when the user stays close to the front camera
 6. Note that you may encounter "Invalid VCS root mapping" Errors but they are fine just ignore them.
+
+
+### Recommendation
+We are still working on getting more 3D hairstyle models to work for our project. For now, we only have two hairstyles that works well. We have implemented multiple colors for the hairstyles and created a recommendation module based on different hair colors. We have nine types of hairstyles and colors. If you click on the recommendation button, the recommended hairstyle based on our algorithm will show up. PLEASE note that you need to click on the recommendation button everytime the user is changed (a.k.a different faces).If the recommendation button is not clicked and user is changes, the app will keep showing the recommendation hairstyle for the previous user until the button is clicked.<br />
+
+
+======================================================================================<br />
+#### Thanks for using Hairstyle Simulation.
+#### If you have any questions, feel free to email us at glxlily@bu.edu or yls@bu.edu.
