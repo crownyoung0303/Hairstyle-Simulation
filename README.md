@@ -2,6 +2,7 @@
 
 ###### Team member: Lingxiu Ge, Lingshan Yang, Tong Ye, Yujia Wang
 
+## Project Goals
 Haitstyle Simulation is a project designed for 
 - Users who have difficulties expressing desired hairstyles to their barbers
 - Users who want to know which hairstyle fits them best 
@@ -11,7 +12,7 @@ Haitstyle Simulation is a project designed for
 
 
 
-### Accomplishments:
+## Accomplishments:
 We successfully implemented an Android application that -
 - helps users who want to know which hairstyle fits them best or how they look with different hairstyles.
 - Recognizes human face and establishes key feature points.
@@ -20,7 +21,7 @@ We successfully implemented an Android application that -
 
 
 
-### How to run our app:
+## How to run our app:
 1. install andriod studio
 2. import project
 3. run project on an andriod phone (please note that our project DOES NOT work on virtual phone)
@@ -29,7 +30,7 @@ We successfully implemented an Android application that -
 6. Note that you may encounter "Invalid VCS root mapping" Errors but they are fine just ignore them.
 
 
-### Recommendation Algorithm:
+## Recommendation Algorithm:
 <img align="center" width="250" src=rec_alg.png>
 
 
@@ -45,22 +46,22 @@ Base on the key feature points (graph above), we use two parameters to define a 
   
 We are still working on getting more 3D hairstyle models to work for our project. For now, we only have two hairstyles that works well. We have implemented multiple colors for the hairstyles and created a recommendation module based on different hair colors. We have nine types of hairstyles and colors. If you click on the recommendation button, the recommended hairstyle based on our algorithm will show up. PLEASE note that you need to click on the recommendation button everytime the user is changed (a.k.a different faces). If the recommendation button is not clicked and user is changed, the app will keep showing the recommendation hairstyle for the previous user until the button is clicked again.<br />
 
-### Technology Used:
+## Technology Used:
 - Use Android studio to develop Android application
 - Use STMobile’s built-in function to recognize a human face and establish 106 (at most) key feature points.
 - Use Rajawali to generate and present 3D model
 - Use blender to edit 3D models
 
 
-### Test Report:
+## Test Report:
 <img align="center" src=test_results.png>
 
 
-### Acknowledgement:
+## Acknowledgement:
 - Simon Cherry
 - Professor Osama Alshaykh
 - EC601 Teaching Assistants in Fall 2017
 
 ======================================================================================<br />
-#### Thanks for using Hairstyle Simulation.
-#### If you have any questions, feel free to email us at glxlily@bu.edu or yls@bu.edu.
+**Thanks for using Hairstyle Simulation.** <br />
+**If you have any questions, feel free to email us at glxlily@bu.edu or yls@bu.edu.**
