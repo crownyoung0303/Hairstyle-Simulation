@@ -2,7 +2,7 @@
 
 ###### Team member: Lingxiu Ge, Lingshan Yang, Tong Ye, Yujia Wang
 
-## Project Goals
+## Project Goals:
 Haitstyle Simulation is a project designed for 
 - Users who have difficulties expressing desired hairstyles to their barbers
 - Users who want to know which hairstyle fits them best 
